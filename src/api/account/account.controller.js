@@ -10,27 +10,6 @@ const printAccounts = async () => {
   });
 };
 
-const isEmailExist = (email) =>
-  new Promise((resolve, reject) => {
-    mysql.query(
-      `SELECT * FROM account WHERE email='${email}'`,
-      // `SELECT * FROM account`,
-      (error, rows, fields) => {
-        if (error) {
-          resolve();
-        } else {
-          // console.log("rows.length:", rows.length);
-          if (rows.length) {
-            resolve();
-          } else {
-            reject(false);
-          }
-          // console.log(flag);
-        }
-      }
-    );
-  });
-
 exports.signUp = async (req, res) => {
   const account = req.body;
   const existNotPromise = Account.isEmailNotExist(account.email);
@@ -76,6 +55,5 @@ exports.printAccounts = async (req, res) => {
 };
 
 exports.test = async (req, res) => {
-  isEmailExist("kyhong222@naver.coms");
   res.send("done");
 };

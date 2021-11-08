@@ -31,7 +31,7 @@ exports.isEmailNotExist = (email) => {
         if (error) {
           throw error;
         } else {
-          console.log("rows.length:", rows.length);
+          // console.log("rows.length:", rows.length);
           if (rows.length) {
             reject();
           } else {
@@ -60,7 +60,7 @@ exports.createAccount = (account) => {
         if (error) {
           throw error;
         } else {
-          console.log(`add account ${account.email}, ${account.password}`);
+          console.log(`add account ${account.email}`);
 
           resolve();
         }
