@@ -47,15 +47,14 @@ exports.isEmailNotExist = (email) => {
 exports.createAccount = (account) => {
   return new Promise((resolve, reject) => {
     const hashedPassword = hash(account.password);
-
     const newAccount = Object.assign({}, this.scheme, account);
 
     // const newScheme = this.scheme;
     // newScheme.email = account.email;
     // newScheme.password = hashedPassword;
 
-    console.log("newAccount", newAccount);
-    console.log(Object.values(newAccount));
+    // console.log("newAccount", newAccount);
+    // console.log(Object.values(newAccount));
     mysql.query(
       `INSERT INTO account (email, password, created, modified, logined) values ` +
         `('${newAccount.email}', '${newAccount.password}', '${newAccount.created}', '${newAccount.modified}', '${newAccount.logined}')`,
