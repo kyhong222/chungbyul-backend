@@ -1,5 +1,7 @@
 const mysql = require("../../bin/mysql");
 const Account = require("../../lib/account");
+const jwt = require("jsonwebtoken");
+const key = process.env.JWT_SECRET;
 
 const printAccounts = async () => {
   mysql.query(`SELECT * FROM account`, (error, rows) => {
@@ -45,15 +47,47 @@ exports.login = async (req, res) => {
           // 아이디가 있는 경우
           if (rows[0].password === account.password) {
             // 로그인 성공
-            console.log("success login");
+            // console.log("success login");
+
+            // 토큰 발급 및 전송
+            const token = jwt.sign(
+              { email: rows[0].email },
+              key,
+              {
+                expiresIn: "7d",
+              },
+              (err, token) => {
+                if (err) throw err;
+                // 토큰 발급
+                res.cookie("access_token", token, {
+                  httpOnly: true,
+                  maxAge: 1000 * 60 * 60 * 24 * 7,
+                });
+
+                // 로그인 정보 전달
+                res.json({
+                  email: rows[0].email,
+                });
+              }
+            );
+            // console.log(rows[0].email, key);
+            // console.log(token);
           } else {
             // 로그인 실패
-            console.log("failed login, id exists");
+            // console.log("failed login, id exists");
+            res.json({
+              code: 409,
+              message: "login failed",
+            });
           }
         } else {
           // 아이디가 없는 경우
           // 로그인 실패
-          console.log("failed login, id not exists");
+          // console.log("failed login, id not exists");
+          res.json({
+            code: 409,
+            message: "login failed",
+          });
         }
       }
     );
@@ -61,7 +95,18 @@ exports.login = async (req, res) => {
     throw e;
   }
 
-  res.json({ code: 200, message: "OK" });
+  // res.json({ code: 200, message: "OK" });
+};
+
+exports.logout = async (req, res) => {
+  res.cookie("access_token", null, {
+    httpOnly: true,
+    maxAge: 0,
+  });
+  res.json({
+    code: 204,
+    message: "logout",
+  });
 };
 
 exports.findID = async (req, res) => {
@@ -82,5 +127,6 @@ exports.printAccounts = async (req, res) => {
 };
 
 exports.test = async (req, res) => {
-  res.send("done");
+  console.log(req.cookies);
+  res.send(req.cookies);
 };

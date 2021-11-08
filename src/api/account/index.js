@@ -9,6 +9,10 @@ Router.post("/login", (req, res) => {
   controller.login(req, res);
 });
 
+Router.post("/logout", (req, res) => {
+  controller.logout(req, res);
+});
+
 Router.get("/findID", (req, res) => {
   controller.findID(req, res);
 });
