@@ -1,10 +1,7 @@
 const Router = require("express").Router();
 const controller = require("./account.controller");
-Router.get("/", (req, res) => {
-  res.send(`Account`);
-});
 
-Router.get("/signUp", (req, res) => {
+Router.post("/signUp", (req, res) => {
   controller.signUp(req, res);
 });
 
@@ -24,4 +21,11 @@ Router.get("/changePW", (req, res) => {
   controller.changePW(req, res);
 });
 
+Router.get("/printAccounts", (req, res) => {
+  controller.printAccounts(req, res);
+});
+
+Router.get("/test", (req, res) => {
+  controller.test(req, res);
+});
 module.exports = Router;

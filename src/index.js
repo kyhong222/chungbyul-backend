@@ -2,8 +2,14 @@ const Express = require("express");
 const app = Express();
 const api = require("./api");
 
-const PORT = 4000;
+const mysql = require("./bin/mysql");
+mysql.connect(console.log("mysql is connected"));
 
+require("dotenv").config();
+
+const PORT = process.env.PORT;
+
+app.use(Express.json());
 app.use("/api", api);
 
 const handleListen = () => {
@@ -16,4 +22,4 @@ const handleHome = (req, res) => {
 };
 
 app.get("/", handleHome);
-app.listen(PORT | 4000, handleListen);
+app.listen(PORT, handleListen);
