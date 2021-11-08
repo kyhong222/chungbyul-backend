@@ -9,9 +9,9 @@ const hash = (password) => {
 };
 
 const dateToDatetime = (date) => {
-  let dateString = "";
-  dateString = date.toISOString().split("T");
-  return (dateString = dateString[0] + " " + dateString[1].split(".")[0]);
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };
 
 exports.scheme = {
@@ -47,15 +47,18 @@ exports.isEmailNotExist = (email) => {
 exports.createAccount = (account) => {
   return new Promise((resolve, reject) => {
     const hashedPassword = hash(account.password);
-    const newScheme = this.scheme;
-    newScheme.email = account.email;
-    newScheme.password = hashedPassword;
 
-    console.log("newScheme", newScheme);
-    console.log(Object.values(newScheme));
+    const newAccount = Object.assign({}, this.scheme, account);
+
+    // const newScheme = this.scheme;
+    // newScheme.email = account.email;
+    // newScheme.password = hashedPassword;
+
+    console.log("newAccount", newAccount);
+    console.log(Object.values(newAccount));
     mysql.query(
       `INSERT INTO account (email, password, created, modified, logined) values ` +
-        `('${newScheme.email}', '${newScheme.password}', '${newScheme.created}', '${newScheme.modified}', '${newScheme.logined}')`,
+        `('${newAccount.email}', '${newAccount.password}', '${newAccount.created}', '${newAccount.modified}', '${newAccount.logined}')`,
       (error, rows) => {
         if (error) {
           throw error;
