@@ -5,7 +5,7 @@ Router.post("/signUp", (req, res) => {
   controller.signUp(req, res);
 });
 
-Router.get("/login", (req, res) => {
+Router.post("/login", (req, res) => {
   controller.login(req, res);
 });
 

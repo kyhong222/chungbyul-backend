@@ -1,11 +1,16 @@
 const mysql = require("../bin/mysql");
 const crypto = require("crypto");
+const Joi = require("@hapi/joi");
 
-const hash = (password) => {
+exports.hash = (password) => {
   return crypto
     .createHmac("sha256", process.env.SECRET_KEY)
     .update(password)
     .digest("hex");
+};
+
+const validateEmailAndPassword = (email, password) => {
+  // TODO
 };
 
 const dateToDatetime = (date) => {
@@ -46,7 +51,7 @@ exports.isEmailNotExist = (email) => {
 
 exports.createAccount = (account) => {
   return new Promise((resolve, reject) => {
-    const hashedPassword = hash(account.password);
+    const hashedPassword = this.hash(account.password);
     const newAccount = Object.assign({}, this.scheme, account);
 
     // const newScheme = this.scheme;
@@ -62,8 +67,7 @@ exports.createAccount = (account) => {
         if (error) {
           throw error;
         } else {
-          console.log(`add account ${account.email}`);
-
+          // console.log(`add account ${account.email}`);
           resolve();
         }
       }

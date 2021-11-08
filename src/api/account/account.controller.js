@@ -1,6 +1,4 @@
 const mysql = require("../../bin/mysql");
-const crypto = require("crypto");
-const { resolve } = require("path");
 const Account = require("../../lib/account");
 
 const printAccounts = async () => {
@@ -34,7 +32,36 @@ exports.signUp = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  res.send("login");
+  const account = req.body;
+  account.password = Account.hash(account.password);
+
+  try {
+    mysql.query(
+      `SELECT * FROM account WHERE email = ?`,
+      [account.email],
+      (error, rows) => {
+        if (error) throw error;
+        if (rows.length) {
+          // 아이디가 있는 경우
+          if (rows[0].password === account.password) {
+            // 로그인 성공
+            console.log("success login");
+          } else {
+            // 로그인 실패
+            console.log("failed login, id exists");
+          }
+        } else {
+          // 아이디가 없는 경우
+          // 로그인 실패
+          console.log("failed login, id not exists");
+        }
+      }
+    );
+  } catch (e) {
+    throw e;
+  }
+
+  res.json({ code: 200, message: "OK" });
 };
 
 exports.findID = async (req, res) => {
