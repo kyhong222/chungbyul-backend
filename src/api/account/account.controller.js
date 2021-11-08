@@ -99,10 +99,11 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  res.cookie("access_token", null, {
-    httpOnly: true,
-    maxAge: 0,
-  });
+  // res.cookie("access_token", null, {
+  //   httpOnly: true,
+  //   maxAge: 0,
+  // });
+  res.clearCookie("access_token");
   res.json({
     code: 204,
     message: "logout",
@@ -127,6 +128,12 @@ exports.printAccounts = async (req, res) => {
 };
 
 exports.test = async (req, res) => {
-  console.log(req.cookies);
+  console.log(req.cookies.access_token);
+  const token = req.cookies.access_token;
+  jwt.verify(token, key, (error, decoded) => {
+    if (error) throw error;
+    console.log(decoded); // { email: 'kyg@naver.com', iat: 1636390329, exp: 1636995129 }}
+  });
+  // TODO: use passport
   res.send(req.cookies);
 };
