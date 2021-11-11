@@ -12,6 +12,7 @@ const printAccounts = async () => {
 
 exports.signUp = async (req, res) => {
   const account = req.body;
+  console.log(req.body);
   const existNotPromise = Account.isEmailNotExist(account.email);
 
   existNotPromise

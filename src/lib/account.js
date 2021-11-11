@@ -2,6 +2,28 @@ const mysql = require("../bin/mysql");
 const crypto = require("crypto");
 const Joi = require("@hapi/joi");
 
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      account:
+ *        type: object
+ *        required:
+ *          - email
+ *          - password
+ *        properties:
+ *          email:
+ *            type: string
+ *            format: email
+ *            description: Email for the user, needs to be unique.
+ *          password:
+ *            type: string
+ *            description: it will be hashed by server
+ *        example:
+ *           email: "test@test.com"
+ *           password: "testpassword"
+ */
+
 exports.hash = (password) => {
   return crypto
     .createHmac("sha256", process.env.SECRET_KEY)

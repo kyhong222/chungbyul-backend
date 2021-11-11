@@ -1,35 +1,49 @@
-const Router = require("express").Router();
 const controller = require("./account.controller");
 
-Router.post("/signUp", (req, res) => {
-  controller.signUp(req, res);
-});
+/**
+ * @swagger
+ * tags:
+ *   name: account
+ *   description: account management
+ */
+const Router = require("express").Router();
 
-Router.post("/login", (req, res) => {
-  controller.login(req, res);
-});
+// TODO: swagger fix
+/**
+ * @swagger
+ * paths:
+ *  /api/account/signUp:
+ *    post:
+ *      summary: Select User
+ *      tags: [account]
+ *      parameters:
+ *         - in: body
+ *           name: body
+ *           required: true
+ *           schema:
+ *             $ref: '#/components/schemas/account'
+ *      responses:
+ *        "200":
+ *          description: A account schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/account'
+ */
+Router.post("/signUp", controller.signUp);
 
-Router.post("/logout", (req, res) => {
-  controller.logout(req, res);
-});
+Router.post("/login", controller.login);
 
-Router.get("/findID", (req, res) => {
-  controller.findID(req, res);
-});
+Router.post("/logout", controller.logout);
 
-Router.get("/findPW", (req, res) => {
-  controller.findPW(req, res);
-});
+Router.get("/findID", controller.findID);
 
-Router.get("/changePW", (req, res) => {
-  controller.changePW(req, res);
-});
+Router.get("/findPW", controller.findPW);
 
-Router.get("/printAccounts", (req, res) => {
-  controller.printAccounts(req, res);
-});
+Router.get("/changePW", controller.changePW);
 
-Router.get("/test", (req, res) => {
-  controller.test(req, res);
-});
+Router.get("/printAccounts", controller.printAccounts);
+
+Router.get("/test", controller.test);
+
 module.exports = Router;

@@ -3,6 +3,11 @@ const app = Express();
 const api = require("./api");
 const cookieParser = require("cookie-parser");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerOptions = require("./bin/swagger");
+const specs = swaggerJsdoc(swaggerOptions);
+
 const mysql = require("./bin/mysql");
 mysql.connect(console.log("mysql is connected"));
 
@@ -12,6 +17,13 @@ const PORT = process.env.PORT;
 
 app.use(Express.json());
 app.use(cookieParser());
+
+app.use(
+  "/swagger",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
+
 app.use("/api", api);
 
 const handleListen = () => {
